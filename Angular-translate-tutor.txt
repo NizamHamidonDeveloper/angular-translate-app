@@ -1,0 +1,61 @@
+npm install bootstrap
+
+angular.json :
+
+"styles": [
+    "src/styles.css",
+    "node_modules/bootstrap/dist/css/bootstrap.min.css"
+]
+
+npm i @ngx-translate/core --save
+
+npm i @ngx-translate/http-loader --save
+
+app.module.ts :
+
+@NgModule({
+  declarations: [
+    AppComponent
+  ],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    })
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
+})
+export class AppModule { }
+// AOT compilation support
+export function httpTranslateLoader(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
+
+create src/assets/i18n/en.json
+
+create src/assets/i18n/ms.json
+
+
+app.component.ts :
+
+export class AppComponent {
+  constructor(
+    public translate: TranslateService
+  ) {
+    translate.addLangs(['en', 'nl']);
+    translate.setDefaultLang('en');
+  }
+
+ switchLang(lang: string) {
+    this.translate.use(lang);
+  }
+}
+
+
